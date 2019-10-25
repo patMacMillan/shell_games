@@ -4,7 +4,7 @@ r1c1=" "; r1c2=" "; r1c3=" ";
 r2c1=" "; r2c2=" "; r2c3=" ";
 r3c1=" "; r3c2=" "; r3c3=" ";
 
-move_list="1,1 1,2 1,3 2,1 2,2 2,3 3,1 3,2 3,3"
+move_list="row1_col1 row1_col2 row1_col3 row2_col1 row2_col2 row2_col3 row3_col1 row3_col2 row3_col3"
 
 show_board() {
    echo "$r1c1 | $r1c2 | $r1c3"
@@ -14,40 +14,69 @@ show_board() {
    echo "$r1c1 | $r1c2 | $r1c3"
 }
 
+
 player_turn() {
    echo "Please choose a position:"
-   select move in $move_list
-   do
-      if [[ -n $move ]]; then
+   echo "$move_list"   
+   read move
+      #if [[ -n $move ]]; then 
          case $move in
             "1,1")
                r1c1="$1"
+               break;
                ;;
             "1,2")
                r1c2="$1"
+               break
                ;;
             "1,3")
                r1c3="$1"
+               break
                ;;
             "2,1")
                r2c1="$1"
+               break
                ;;
             "2,2")
                r2c2="$1"
+               break
                ;;
             "2,3")
                r2c3="$1"
+               break
                ;;
             "3,1")
                r3c1="$1"
+               break
                ;;
             "3,2")
                r3c2="$1"
+               break
                ;;
             "3,3")
                r3c3="$1"
+               break
                ;;
           esac
+      #fi
+}
+
+game() {
+   for turn in $(seq 1 9)
+   do
+      echo "TURN: $turn"
+      if [[ $(($turn % 2)) -eq 0 ]]; then
+         echo "Player Two: O's"
+         show_board
+         player_turn "O"
+      else
+         echo "Player One: X's" 
+         show_board
+         player_turn "X"
       fi
    done
 }
+
+game
+
+               
