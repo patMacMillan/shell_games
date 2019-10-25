@@ -4,60 +4,71 @@ r1c1=" "; r1c2=" "; r1c3=" ";
 r2c1=" "; r2c2=" "; r2c3=" ";
 r3c1=" "; r3c2=" "; r3c3=" ";
 
-move_list="1,1 1,2 1,3 2,1 2,2 2,3 3,1 3,2 3,3"
+move_list=$(seq 1 9)
 
 show_board() {
-   echo "$r1c1 | $r1c2 | $r1c3"
-   echo "---------------------"
-   echo "$r2c1 | $r2c2 | $r2c3"
-   echo "---------------------"
-   echo "$r3c1 | $r3c2 | $r3c3"
+   if [[ $(echo $* | tr -d ' ') == "" ]]; then
+      echo "$r1c1 | $r1c2 | $r1c3"
+      echo "---------"
+      echo "$r2c1 | $r2c2 | $r2c3"
+      echo "---------"
+      echo "$r3c1 | $r3c2 | $r3c3"
+   else
+      echo "$1 | $2 | $3"
+      echo "---------"
+      echo "$4 | $5 | $6"
+      echo "---------"
+      echo "$7 | $8 | $9"
+   fi	   
 }
 
 player_turn() {
    echo "Please choose a position:"
-   echo "$move_list"   
-   read move
+   select move in $move_list
+      do
       #if [[ -n $move ]]; then 
          case $move in
-            "1,1")
+            "1")
                r1c1="$1"
-               #break;
+               break;
                ;;
-            "1,2")
+            "2")
                r1c2="$1"
-               #break
+               break
                ;;
-            "1,3")
+            "3")
                r1c3="$1"
-               #break
+               break
                ;;
-            "2,1")
+            "4")
                r2c1="$1"
-               #break
+               break
                ;;
-            "2,2")
+            "5")
                r2c2="$1"
-               #break
+               break
                ;;
-            "2,3")
+            "6")
                r2c3="$1"
-               #break
+               break
                ;;
-            "3,1")
+            "7")
                r3c1="$1"
-               #break
+               break
                ;;
-            "3,2")
+            "8")
                r3c2="$1"
-               #break
+               break
                ;;
-            "3,3")
+            "9")
                r3c3="$1"
-               #break
+               break
                ;;
           esac
       #fi
+      done
+      new_move_list=$(echo $move_list | tr -d "$move")
+      move_list=$new_move_list
 }
 
 game() {
@@ -65,17 +76,36 @@ game() {
    do
       echo "TURN: $turn"
       if [[ $(($turn % 2)) -eq 0 ]]; then
+	 clear
          echo "Player Two: O's"
+	 echo "Current Board:"
+	 echo
          show_board
+	 echo
+	 echo "#########"
+	 echo
+	 echo "Selection Board"
+	 echo
+	 show_board 1 2 3 4 5 6 7 8 9
          player_turn "O"
-      else
+      else 
+	 clear
          echo "Player One: X's" 
+	 echo "Current Board:"
+	 echo
          show_board
+	 echo
+	 echo "#########"
+	 echo
+	 echo "Selection Board:"
+	 echo
+         show_board 1 2 3 4 5 6 7 8 9
          player_turn "X"
       fi
    done
+   echo "GAME OVER:"
+   show_board
 }
 
 game
 
-               
